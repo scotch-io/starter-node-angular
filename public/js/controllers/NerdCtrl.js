@@ -1,5 +1,5 @@
 angular.module('NerdCtrl', []).controller('NerdController', function($scope) {
 
-	$scope.test = 'hello';	
+	$scope.tagline = 'Nothing beats a pocket protector!';
 
 });
