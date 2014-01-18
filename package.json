@@ -1,0 +1,7 @@
+{
+  "name": "starter-node-angular",
+  "main": "server.js",
+  "dependencies": {
+    "express": "latest",
+  }
+}
