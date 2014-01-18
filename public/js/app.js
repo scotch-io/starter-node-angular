@@ -1,0 +1,1 @@
+angular.module('sampleApp', ['ngRoute', 'NerdCtrl', 'NerdService', 'appRoutes']);
