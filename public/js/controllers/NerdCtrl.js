@@ -1,5 +1,6 @@
-angular.module('NerdCtrl').controller('NerdController', ['$scope', function($scope) {
+angular.module('NerdCtrl', []).controller('NerdController', function($scope) {
 
-	$scope.test = 'hello';
+	$scope.test = 'hello';	
+	console.log('fuck');
 
-}]);
+});

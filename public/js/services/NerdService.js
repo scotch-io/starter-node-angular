@@ -1,5 +1,5 @@
-angular.module('NerdService').factory('Nerd', ['$resource', function($resource) {
+angular.module('NerdService', []).factory('Nerd', ['$resource', function($resource) {
 
 
-	
+
 }]);
