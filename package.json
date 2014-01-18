@@ -2,6 +2,7 @@
   "name": "starter-node-angular",
   "main": "server.js",
   "dependencies": {
-    "express": "latest"
+    "express": "latest",
+    "mongoose": "latest"
   }
 }

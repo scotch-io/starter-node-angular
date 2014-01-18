@@ -8,13 +8,13 @@ angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider', f
 		})
 
 		// sample page 1
-		.when('/sample1', {
-			templateUrl: 'views/sample1.html'
+		.when('/nerds', {
+			templateUrl: 'views/nerd.html'
 		})
 
 		// sample page 2 (with parameters)
-		.when('/sample2:nerd_id', {
-			templateUrl: 'views/sample2.html'
+		.when('/test:name', {
+			templateUrl: 'views/nerd.html'
 		});
 
 	$locationProvider.html5Mode(true);

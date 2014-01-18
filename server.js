@@ -1,9 +1,15 @@
 // modules =================================================
 var express = require('express');
 var app     = express();
+var mongoose= require('mongoose');
 
 // configuration ===========================================
-var port = process.env.PORT || 8080;
+	
+// config files
+var db = require('./config/db');
+
+var port = process.env.PORT || 8080; // set our port
+// mongoose.connect(db.url); // connect to our mongoDB database
 
 app.configure(function() {
 	app.use(express.static(__dirname + '/public')); 	// set the static files location /public/img will be /img for users
@@ -13,7 +19,7 @@ app.configure(function() {
 });
 
 // routes ==================================================
-require('./app/routes')(app);
+require('./app/routes')(app); // pass our application into our routes
 
 // start app ===============================================
 app.listen(port);	
