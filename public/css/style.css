@@ -1,1 +1,9 @@
-body { padding-top:30px; }
+* {
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+body {
+    font: 62.5% helvetica, sans-serif, arial;
+    line-height: 1.5em;
+}
