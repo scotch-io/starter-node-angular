@@ -1,0 +1,28 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    base(href='/')
+    title Starter Node and Angular
+    link(rel='stylesheet', href='libs/bootstrap/dist/css/bootstrap.min.css')
+    link(rel='stylesheet', href='css/style.css')
+    script(src='libs/angular/angular.min.js')
+    script(src='libs/angular-route/angular-route.min.js')
+    script(src='js/controllers/MainCtrl.js')
+    script(src='js/controllers/NerdCtrl.js')
+    script(src='js/services/NerdService.js')
+    script(src='js/controllers/GeekCtrl.js')
+    script(src='js/services/GeekService.js')
+    script(src='js/appRoutes.js')
+    script(src='js/app.js')
+  body(ng-app='sampleApp', ng-controller='NerdController')
+    .container
+      nav.navbar.navbar-inverse
+        .navbar-header
+          a.navbar-brand(href='/') Stencil: Node and Angular
+        ul.nav.navbar-nav
+          li
+            a(href='/nerds') Nerds
+          li
+            a(href='/geeks') Geeks
+      div(ng-view='')
