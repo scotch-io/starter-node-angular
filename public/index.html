@@ -12,7 +12,7 @@
 
 	<!-- JS -->
 	<script src="libs/angular/angular.min.js"></script>
-	<script src="libs/angular-route/angular-route.min.js"></script>
+	<script src="libs/angular-ui-router/release/angular-ui-router.min.js"></script>
 
 	<!-- ANGULAR CUSTOM -->
 	<script src="js/controllers/MainCtrl.js"></script>
@@ -23,7 +23,7 @@
 	<script src="js/appRoutes.js"></script>
 	<script src="js/app.js"></script>
 </head>
-<body ng-app="sampleApp" ng-controller="NerdController">
+<body ng-app="sampleApp">
 <div class="container">
 	
 	<!-- HEADER -->
@@ -32,13 +32,14 @@
 			<a class="navbar-brand" href="/">Stencil: Node and Angular</a>
 		</div>
 		<ul class="nav navbar-nav">
-			<li><a href="/nerds">Nerds</a></li>
-			<li><a href="/geeks">Geeks</a></li>
+            <li><a ui-sref="home">Home</a></li>
+			<li><a ui-sref="nerds">Nerds</a></li>
+			<li><a ui-sref="geeks">Geeks</a></li>
 		</ul>
 	</nav>
 
 	<!-- ANGULAR DYNAMIC CONTENT -->
-	<div ng-view></div>
+	<div ui-view></div>
 
 </div>
 </body>

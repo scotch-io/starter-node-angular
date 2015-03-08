@@ -1,5 +1,6 @@
-angular.module('NerdCtrl', []).controller('NerdController', function($scope) {
+angular.module('NerdCtrl', []).controller('NerdController', function() {
 
-	$scope.tagline = 'Nothing beats a pocket protector!';
+    var vm = this;
+    vm.tagline = 'Nothing beats a pocket protector!';
 
 });

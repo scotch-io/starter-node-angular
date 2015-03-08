@@ -1,23 +1,23 @@
-angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
+angular.module('appRoutes', []).config(function($stateProvider, $urlRouterProvider) {
 
-	$routeProvider
+    $urlRouterProvider.otherwise('/');
 
-		// home page
-		.when('/', {
-			templateUrl: 'views/home.html',
-			controller: 'MainController'
-		})
+    $stateProvider
+        .state('home', {
+            url: '/',
+            templateUrl: 'views/home.html',
+            controller: 'MainController as mainCtrl'
+        })
 
-		.when('/nerds', {
-			templateUrl: 'views/nerd.html',
-			controller: 'NerdController'
-		})
+        .state('nerds', {
+            url: '/nerds',
+            templateUrl: 'views/nerd.html',
+            controller: 'NerdController as nerdCtrl'
+        })
 
-		.when('/geeks', {
-			templateUrl: 'views/geek.html',
-			controller: 'GeekController'	
-		});
-
-	$locationProvider.html5Mode(true);
-
-}]);
+        .state('geeks', {
+            url: '/geeks',
+            templateUrl: 'views/geek.html',
+            controller: 'GeekController as geekCtrl'
+        })
+});
