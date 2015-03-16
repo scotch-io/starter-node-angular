@@ -19,5 +19,5 @@ angular.module('appRoutes', []).config(function($stateProvider, $urlRouterProvid
             url: '/geeks',
             templateUrl: 'views/geek.html',
             controller: 'GeekController as geekCtrl'
-        })
+        });
 });
