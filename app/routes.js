@@ -33,7 +33,6 @@ router.get('/:recipeId', function (req, res, next) {
         url: 'http://food2fork.com/api/get',
         form: {key: FFKEY.key, rId: req.params.recipeId}
     };
-
     request(options, function (error, response, body) {
         if (error) throw new Error(error);
         f2fGetRecipeResponse = JSON.parse(body)
@@ -43,34 +42,47 @@ router.get('/:recipeId', function (req, res, next) {
 router.get('/ingredients/:itemName', function (req, res, next) {
     let request = require("request");
     let options = {
-        method: 'GET',
+        method: 'POST',
         url: 'http://www.supermarketapi.com/api.asmx/SearchByProductName',
-        qs: {APIKEY: SUPERMARKETKEY.key, ItemName: req.params.itemName},
         form: {APIKEY: SUPERMARKETKEY.key, ItemName: req.params.itemName}
     };
     request(options, function (error, response, body) {
         if (error) throw new Error(error);
         console.log(body);
     });
-
 })
+
 router.get('/stores/:state/:city', function (req, res, next) {
     let request = require("request");
     let options = {
-        method: 'GET',
+        method: 'POST',
         url: 'http://www.supermarketapi.com/api.asmx/StoresByCityState',
-        qs: {
+        form: {
             APIKEY: SUPERMARKETKEY.key,
             SelectedCity: req.params.city,
             SelectedState: req.params.state
-        },
-        form: {APIKEY: SUPERMARKETKEY.key}
+        }
     };
     request(options, function (error, response, body) {
         if (error) throw new Error(error);
         console.log(body);
     });
-
+})
+router.get('/:storeId/:item', function (req, res, next) {
+    let request = require("request");
+    let options = {
+        method: 'POST',
+        url: 'http://www.supermarketapi.com/api.asmx/SearchForItem',
+        form: {
+            APIKEY: SUPERMARKETKEY.key,
+            StoreId: req.params.storeId,
+            ItemName: req.params.item
+        }
+    };
+    request(options, function (error, response, body) {
+        if (error) throw new Error(error);
+        console.log(body);
+    });
 })
 
 module.exports = router
