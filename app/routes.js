@@ -123,7 +123,7 @@ router.post('/searchForIngredient', function (req, res, next) {
                     });
                 });
             })
-            res.json({message: "hmm"})
+            res.json({Results: results})
         });
     });
 })
