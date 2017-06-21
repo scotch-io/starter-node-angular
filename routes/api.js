@@ -1,9 +1,86 @@
-const parseString = require('xml2js').parseString;
 const express = require('express')
-const request = require("request");
 const router = express.Router()
+const parseString = require('xml2js').parseString;
+const request = require("request");
+const rp = require('request-promise')
 const FFKEY = require('../config/food2forkAPI')
 const SUPERMARKETKEY = require('../config/supermarketAPI')
+
+//Helper for authorization
+const authorized = require('./authCheck')
+
+const mongoose = require('mongoose')
+if (!mongoose.connection.db) {
+    mongoose.connect('mongodb://localhost/cs591')
+}
+const db = mongoose.connection
+const Schema = mongoose.Schema
+const personSchema = new Schema({
+    name: String,
+    UID: String,
+    department: String
+})
+const people = mongoose.model('people', personSchema)
+
+
+// POST Create a new user (only available to logged-in users)
+router.post('/db', authorized, function (req, res, next) {
+    aPerson = new people(
+        req.body
+    )
+    aPerson.save(function (err) {
+        if (err) {
+            res.send(err)
+        }
+        //send back the new person
+        else {
+            res.send(aPerson)
+        }
+    })
+})
+
+//GET Fetch all users
+router.get('/db', function (req, res, next) {
+    people.find({}, function (err, results) {
+        res.json(results)
+    })
+
+})
+
+/*
+ //GET Fetch single user, match /users/db/Frank
+ router.get('/db/:_id', function (req, res, next) {
+ people.find({_id: req.param('_id')}, function (err, results) {
+ res.json(results);
+ });
+ });
+ */
+
+router.get('/db/:name', function (req, res, next) {
+    findByName(req.params.name)
+        .then(function (status) {
+            res.json(status)
+        })
+        .catch(function (status) {
+            res.json(status)
+
+        })
+})
+
+//PUT Update the specified user's name
+router.put('/db/:_id', function (req, res, next) {
+    people.findByIdAndUpdate(req.params._id, req.body, {'upsert': 'true'}, function (err, result) {
+        if (err) {
+            res.json({message: 'Error updating'})
+        }
+        else {
+            console.log('updated')
+            res.json({message: 'success'})
+        }
+
+    })
+
+})
 
 let stores = []
 
@@ -27,11 +104,11 @@ router.get('/getRecipes', function (req, res, next) {
     request(options, function (error, response, body) {
         if (error) throw new Error(error);
         let recipeList = JSON.parse(body)
-        let recipeLinks = []
+        let recipeLinks = [{}]
         recipeList.recipes.forEach(function (recipe) {
-            recipeLinks.push(recipe.source_url)
+            recipeLinks.push({title: recipe.title, url: recipe.source_url})
         })
-        res.json({Recipes: recipeLinks})
+        res.json(recipeLinks)
     });
 })
 // router.get('/:recipeId', function (req, res, next) {
@@ -116,19 +193,62 @@ router.post('/searchForIngredient', function (req, res, next) {
                         ItemName: req.body.item
                     }
                 };
-                request(options, function (error, response, body) {
-                    if (error) throw new Error(error);
-                    parseString(body, function (err, result) {
-                        results.push(result)
-                    });
-                });
+                /*                request(options, function (error, response, body) {
+                 if (error){ throw new Error(error);}
+                 else {
+                 parseString(body, function (err, result) {
+                 results.push(result)
+
+                 });}
+                 });*/
+                rp(options)
+                    .then(function (err, response, body) {
+                        if (err) {
+                            res.statusCode = 403
+                            next()
+                        }
+                        else {
+                            parseString(body, function (err, result) {
+                                    results.push(result)
+                                }
+                            )
+                        }
+                    })
             })
             res.json({Results: results})
         });
     });
 })
-router.get('/:storeId/:item', function (req, res, next) {
 
+
+//DELETE Delete the specified user
+router.delete('/db/:_id', function (req, res, next) {
+    people.findByIdAndRemove(req.params._id, function (err, result) {
+        if (err) {
+            res.json({message: 'Error deleting'})
+        }
+        else {
+            res.json({message: 'success'})
+        }
+    })
 })
 
+
+let findByName = function (checkName) {
+    return new Promise(function (resolve, reject) {
+        people.find({name: checkName}, function (err, results) {
+            console.log(results, results.length)
+            if (results.length > 0) {
+                resolve({found: results})
+            }
+            else {
+                reject({found: false})
+            }
+//    return ( (results.length  > 0) ? results : false)
+        })
+    })
+}
+
 module.exports = router
+
+//TODO Route to log out (req.logout())

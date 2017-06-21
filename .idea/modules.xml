@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/CS591-Project.iml" filepath="$PROJECT_DIR$/.idea/CS591-Project.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/bucs-mean.iml" filepath="$PROJECT_DIR$/.idea/bucs-mean.iml" />
     </modules>
   </component>
 </project>

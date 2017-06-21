@@ -1,45 +1,83 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <base href="/">
+    <!-- Latest compiled and minified jQuery -->
+    <script src="https://code.jquery.com/jquery-2.2.3.js"
+            integrity="sha256-laXWtGydpwqJ8JA+X9x2miwmaiKhn8tVmOVEigRNtP4=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+          integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"
+          integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+            integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+            crossorigin="anonymous"></script>
+    <!-- Angular (minified) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.2/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.2/angular-route.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.2/angular-cookies.js"></script>
 
-    <title>Starter Node and Angular</title>
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="libs/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/style.css"> <!-- custom styles -->
+    <!--Controllers for this page/app -->
+    <script src="javascripts/controllers.js"></script>
+    <!-- Local styles -->
+    <link rel="stylesheet" href="stylesheets/style.css">
 
-    <!-- JS -->
-    <script src="libs/angular/angular.min.js"></script>
-    <script src="libs/angular-route/angular-route.min.js"></script>
-
-    <!-- ANGULAR CUSTOM -->
-    <script src="js/controllers/MainCtrl.js"></script>
-    <script src="js/controllers/NerdCtrl.js"></script>
-    <script src="js/services/NerdService.js"></script>
-    <script src="js/controllers/GeekCtrl.js"></script>
-    <script src="js/services/GeekService.js"></script>
-    <script src="js/appRoutes.js"></script>
-    <script src="js/app.js"></script>
 </head>
-<body ng-app="sampleApp" ng-controller="NerdController">
-<div class="container">
 
-    <!-- HEADER -->
-    <nav class="navbar navbar-inverse">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="/">Stencil: Node and Angular</a>
+<body ng-app="cs411">
+<div ng-controller="cs411ctrl" ng-init="initApp()">
+    <img src="/images/master-logo.gif"><span class="largeText">  Department of Computer Science</span>
+    <h2>{{h2message}} {{name}}</h2>
+    <div>
+        <form class="form-inline" name="inputForm">
+            <div class="form-group">
+                <label class="sr-only" for="formName">Email address</label>
+                <input type="text" class="form-control" id="formName" placeholder="Enter name" ng-model="name" required>
+            </div>
+            <div class="form-group">
+                <label class="sr-only" for="formUID">Email address</label>
+                <input type="text" class="form-control" id="formUID" placeholder="Enter UID" ng-model="UID" required>
+            </div>
+            <div class="form-group">
+                <label class="sr-only" for="formDepartment">Password</label>
+                <input type="text" class="form-control" id="formDepartment" placeholder="Enter Department"
+                       ng-model="department" required>
+                <input type="hidden" value="{{user._id}}">
+            </div>
+            <button type="submit" class="btn btn-primary" ng-disabled="inputForm.$invalid" ng-click="createUser()">
+                {{buttonMessage}}
+            </button>
+        </form>
+        <br/>
+        <div ng-hide="authorized">
+            <br/>
+            <button type="submit" class="btn btn-primary" ng-click="doTwitterAuth()">Log in with Twitter</button>
         </div>
-        <ul class="nav navbar-nav">
-            <li><a href="/nerds">Nerds</a></li>
-            <li><a href="/geeks">Geeks</a></li>
+        <div ng-show="showLogin">
+            Name: <input type="text" ng-model="name">
+            Username: <input type="text" ng-model="username">
+            Password: <input type="password" ng-model="password">
+            <button class="btn btm-sm" ng-click="login()">Log in</button>
+            <button class="btn btm-sm" ng-click="register()">Register</button>
+
+        </div>
+        <br/>
+        <div ng-show="authorized">
+            <button class="btn btn-sm" ng-click="logout()">Log out</button>
+            <button class="btn" ng-click="getRecipes()">Recipes</button>
+            <button class="btn" ng-click="">Search for Ingredients</button>
+        </div>
+    </div>
+    <div class="col-xs-12" style="height:30px;"></div>
+    <div class="well col-md-6">
+        <ul class="list-group">
+            <li ng-controller="listController" class="list-group-item largeText" ng-repeat="recipe in recipes">
+                <a ng-href={{recipe.url}}">{{recipe.title}}</a>
+            </li>
         </ul>
-    </nav>
-
-    <!-- ANGULAR DYNAMIC CONTENT -->
-    <div ng-view></div>
-
+    </div>
 </div>
 </body>
 </html>
