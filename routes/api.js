@@ -96,47 +96,21 @@ router.get('/getRecipes', function (req, res, next) {
      "image_url":"http://static.food2fork.com/icedcoffee5766.jpg",
      "social_rank":100,
      "publisher_url":"http://thepioneerwoman.com"}, ...]*/
-    let options = {
+    const options = {
         method: 'POST',
         url: 'http://food2fork.com/api/search',
         form: {key: FFKEY.key}
     };
     request(options, function (error, response, body) {
         if (error) throw new Error(error);
-        let recipeList = JSON.parse(body)
-        let recipeLinks = [{}]
+        const recipeList = JSON.parse(body)
+        const recipeLinks = [{}]
         recipeList.recipes.forEach(function (recipe) {
             recipeLinks.push({title: recipe.title, url: recipe.source_url})
         })
         res.json(recipeLinks)
     });
 })
-// router.get('/:recipeId', function (req, res, next) {
-//     /*example return
-//      "recipe":{
-//      "publisher":"The Pioneer Woman",
-//      "f2f_url":"http://food2fork.com/view/47024",
-//      "ingredients":[
-//      "1 pound Ground Coffee (good, Rich Roast)",
-//      "8 quarts Cold Water","Half-and-half (healthy Splash Per Serving)",
-//      "Sweetened Condensed Milk (2-3 Tablespoons Per Serving)",
-//      "Note: Can Use Skim Milk, 2% Milk, Whole Milk, Sugar, Artificial Sweeteners, Syrups...adapt To Your Liking!"],
-//      "source_url":"http://thepioneerwoman.com/cooking/2011/06/perfect-iced-coffee/",
-//      "recipe_id":"47024",
-//      "image_url":"http://static.food2fork.com/icedcoffee5766.jpg",
-//      "social_rank":100,"publisher_url":"http://thepioneerwoman.com",
-//      "title":"Perfect Iced Coffee"}*/
-//     let options = {
-//         method: 'POST',
-//         url: 'http://food2fork.com/api/get',
-//         form: {key: FFKEY.key, rId: req.params.recipeId}
-//     };
-//     request(options, function (error, response, body) {
-//         if (error) throw new Error(error);
-//         let selectedRecipe = JSON.parse(body)
-//         res.json(selectedRecipe)
-//     });
-// })
 
 router.post('/searchForIngredient', function (req, res, next) {
     /*example result
@@ -153,71 +127,69 @@ router.post('/searchForIngredient', function (req, res, next) {
      "Zip":["2215"],
      "Phone":[" "],
      "StoreId":["2341ab1afa"]}, ...}*/
-    let options = {
+    const resultPromises1 = []
+    const options = {
         method: 'POST',
         url: 'http://www.supermarketapi.com/api.asmx/StoresByCityState',
         form: {
             APIKEY: SUPERMARKETKEY.key,
-            SelectedCity: req.body.city,
-            SelectedState: req.body.state
+            SelectedCity: req.body.SelectedCity,
+            SelectedState: req.body.SelectedState
         }
     };
-    request(options, function (error, response, body) {
-        if (error) throw new Error(error);
-        parseString(body, function (err, result) {
-            result.ArrayOfStore.Store.forEach(function (store) {
-                stores.push(store)
-            })
-            /* example result
-             "ArrayOfProduct":{
-             "$":{
-             "xmlns:xsi":"http://www.w3.org/2001/XMLSchema-instance",
-             "xmlns:xsd":"http://www.w3.org/2001/XMLSchema",
-             "xmlns":"http://www.SupermarketAPI.com"},
-             "Product":[{
-             "Itemname":["Bustello Cafe Coffee Regular - 10 Oz"],
-             "ItemDescription":["Dark roast, special for espresso coffee..."],
-             "ItemCategory":["Beverages"],
-             "ItemID":["27278"],
-             "ItemImage":["http://smapistorage.blob.core.windows.net/thumbimages/119010996_100x100.jpg"],
-             "AisleNumber":["Aisle:8"]}, ...}
-             */
-            let results = []
-            stores.forEach(function (store) {
-                let options = {
-                    method: 'POST',
-                    url: 'http://www.supermarketapi.com/api.asmx/SearchForItem',
-                    form: {
-                        APIKEY: SUPERMARKETKEY.key,
-                        StoreId: store.StoreId[0],
-                        ItemName: req.body.item
-                    }
-                };
-                /*                request(options, function (error, response, body) {
-                 if (error){ throw new Error(error);}
-                 else {
-                 parseString(body, function (err, result) {
-                 results.push(result)
+    const p1 = rp(options)
+        .catch(function (err) {
+            res.send(err)
+        })
+    resultPromises1.push(p1)
+    Promise.all(resultPromises1)
+        .then(function (resp) {
+            parseString(resp, function (err, result) {
+                result.ArrayOfStore.Store.forEach(function (store) {
+                    stores.push(store)
+                })
+                /* example result
+                 "ArrayOfProduct":{
+                 "$":{
+                 "xmlns:xsi":"http://www.w3.org/2001/XMLSchema-instance",
+                 "xmlns:xsd":"http://www.w3.org/2001/XMLSchema",
+                 "xmlns":"http://www.SupermarketAPI.com"},
+                 "Product":[{
+                 "Itemname":["Bustello Cafe Coffee Regular - 10 Oz"],
+                 "ItemDescription":["Dark roast, special for espresso coffee..."],
+                 "ItemCategory":["Beverages"],
+                 "ItemID":["27278"],
+                 "ItemImage":["http://smapistorage.blob.core.windows.net/thumbimages/119010996_100x100.jpg"],
+                 "AisleNumber":["Aisle:8"]}, ...}
+                 */
+                const resultPromises = [];
+                stores.forEach(function (store) {
+                    const options = {
+                        method: 'POST',
+                        url: 'http://www.supermarketapi.com/api.asmx/SearchForItem',
+                        form: {
+                            APIKEY: SUPERMARKETKEY.key,
+                            StoreId: store.StoreId[0],
+                            ItemName: req.body.ItemName
+                        }
+                    };
+                    const p = rp(options)
+                        .catch(function (err) {
+                            res.send(err)
+                        });
 
-                 });}
-                 });*/
-                rp(options)
-                    .then(function (err, response, body) {
-                        if (err) {
-                            res.statusCode = 403
-                            next()
-                        }
-                        else {
-                            parseString(body, function (err, result) {
-                                    results.push(result)
-                                }
-                            )
-                        }
-                    })
+                    resultPromises.push(p);
+                });
+
+                Promise.all(resultPromises)
+                    .then(function (resp) {
+                        parseString(resp, function (err, result) {
+                            const results = result.ArrayOfProduct.Product
+                            res.json({stores: results})
+                        })
+                    });
             })
-            res.json({Results: results})
-        });
-    });
+        })
 })
 
 

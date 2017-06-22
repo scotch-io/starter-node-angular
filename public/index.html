@@ -67,7 +67,10 @@
         <div ng-show="authorized">
             <button class="btn btn-sm" ng-click="logout()">Log out</button>
             <button class="btn" ng-click="getRecipes()">Recipes</button>
-            <button class="btn" ng-click="">Search for Ingredients</button>
+            <button class="btn" ng-click="getStores()">Search for Ingredient</button>
+            <input type="text" ng-model="ingredient" placeholder="Enter Ingredient">
+            <input type="text" ng-model="city" placeholder="Enter City">
+            <input type="text" ng-model="state" placeholder="Enter State">
         </div>
     </div>
     <div class="col-xs-12" style="height:30px;"></div>
@@ -78,6 +81,14 @@
             </li>
         </ul>
     </div>
+    <div class="well col-md-6">
+        <ul class="list-group">
+            <li ng-controller="listController" class="list-group-item largeText" ng-repeat="store in stores">
+                {{store}}
+            </li>
+        </ul>
+    </div>
+
 </div>
 </body>
 </html>

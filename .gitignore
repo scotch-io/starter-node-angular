@@ -31,4 +31,6 @@ node_modules
 #Configuration information
 config
 
+.idea/*
+
 # Created by .ignore support plugin (hsz.mobi)
