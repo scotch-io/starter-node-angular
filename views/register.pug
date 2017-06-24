@@ -1,0 +1,14 @@
+html
+    head
+        title Registration page
+        link(rel='stylesheet', href='/stylesheets/style.css')
+    body
+        p Register using the form below
+        form(method='POST' action='/auth/register')
+            label Username
+            input(type='text' name='username')
+            label Name
+                input(type='text' name='name')
+            label Password
+            input(type='text' name='password')
+            button(type='submit' value='Register')

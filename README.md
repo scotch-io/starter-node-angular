@@ -1,20 +1,8 @@
-# MEAN Stack Single Page Application Starter
-
-This is a repo for a starter appliation for a Single Page MEAN Stack application. Just download and install and you have a good foundation for building application. 
-
-## Installation
-1. Download the repository
-2. Install npm modules: `npm install`
-3. Install bower dependencies `bower install`
-4. Start up the server: `node server.js`
-5. View in browser at http://localhost:8080
-
-Use this starter kit to build any MEAN stack application you like.
-
-If you have any questions or requests, email us at [chris@scotch.io](mailto:chris@scotch.io) and we'll keep updating this to make it perfect.
-
-## Future Additions
-- CRUD examples
-- Development and Production Environments
-- Link examples
-- Single Page AngularJS Animations
+# BUCS MEAN
+this is the code that we looked during our faculty lecture on dogfooding. Note that to run this yourself you'll need to install the various dependencies in node_modules; they can be installed via `npm install`.
+## Passport
+This branch is set up for local auth using Passport.js
+## Running
+To run, first clone the repo and install the Node componenets. Start mongoDB with `mongod&`, then run the app with `npm start`.
+## Slides
+The original slide set accompanying the talk are in the `docs` folder in PDF.
