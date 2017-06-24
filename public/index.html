@@ -28,67 +28,52 @@
 
 <body ng-app="cs411">
 <div ng-controller="cs411ctrl" ng-init="initApp()">
-    <img src="/images/master-logo.gif"><span class="largeText">  Department of Computer Science</span>
-    <h2>{{h2message}} {{name}}</h2>
-    <div>
-        <form class="form-inline" name="inputForm">
-            <div class="form-group">
-                <label class="sr-only" for="formName">Email address</label>
-                <input type="text" class="form-control" id="formName" placeholder="Enter name" ng-model="name" required>
-            </div>
-            <div class="form-group">
-                <label class="sr-only" for="formUID">Email address</label>
-                <input type="text" class="form-control" id="formUID" placeholder="Enter UID" ng-model="UID" required>
-            </div>
-            <div class="form-group">
-                <label class="sr-only" for="formDepartment">Password</label>
-                <input type="text" class="form-control" id="formDepartment" placeholder="Enter Department"
-                       ng-model="department" required>
-                <input type="hidden" value="{{user._id}}">
-            </div>
-            <button type="submit" class="btn btn-primary" ng-disabled="inputForm.$invalid" ng-click="createUser()">
-                {{buttonMessage}}
-            </button>
-        </form>
-        <br/>
-        <div ng-hide="authorized">
-            <br/>
+    <img src="./images/master-logo.gif"><span class="largeText">  Department of Computer Science</span>
+    <h2>Welcome to Recipe Shopper</h2>
+    <div class="row" style="padding-left: 15px">
+        <div ng-hide="authorized" style="padding-top: 20px">
             <button type="submit" class="btn btn-primary" ng-click="doTwitterAuth()">Log in with Twitter</button>
         </div>
-        <div ng-show="showLogin">
-            Name: <input type="text" ng-model="name">
-            Username: <input type="text" ng-model="username">
-            Password: <input type="password" ng-model="password">
-            <button class="btn btm-sm" ng-click="login()">Log in</button>
-            <button class="btn btm-sm" ng-click="register()">Register</button>
-
-        </div>
         <br/>
-        <div ng-show="authorized">
-            <button class="btn btn-sm" ng-click="logout()">Log out</button>
-            <button class="btn" ng-click="getRecipes()">Recipes</button>
-            <button class="btn" ng-click="getStores()">Search for Ingredient</button>
-            <input type="text" ng-model="ingredient" placeholder="Enter Ingredient">
-            <input type="text" ng-model="city" placeholder="Enter City">
-            <input type="text" ng-model="state" placeholder="Enter State">
+        <div ng-show="authorized" style="padding-bottom: 10px">
+            <button class="btn btn-primary" ng-click="logout()">Log out</button>
         </div>
     </div>
-    <div class="col-xs-12" style="height:30px;"></div>
-    <div class="well col-md-6">
+    <div class="row" style="padding-left: 100px">
+        <div ng-show="authorized">
+            <div class="row">
+                <div class="col-md-6">
+                    <button class="btn" ng-click="getRecipes()">Get Recipes</button>
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <button class="btn" ng-click="getStores()">Search for Ingredient</button>
+                    </div>
+                    <div class="row" style="padding-top: 5px">
+                        <input type="text" ng-model="ingredient" placeholder="Enter Ingredient">
+                        <input type="text" ng-model="city" placeholder="Enter City">
+                        <input type="text" ng-model="state" placeholder="Enter State">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
         <ul class="list-group">
             <li ng-controller="listController" class="list-group-item largeText" ng-repeat="recipe in recipes">
                 <a ng-href={{recipe.url}}">{{recipe.title}}</a>
             </li>
         </ul>
     </div>
-    <div class="well col-md-6">
+    <div class="col-md-6">
         <ul class="list-group">
             <li ng-controller="listController" class="list-group-item largeText" ng-repeat="store in stores">
                 {{store}}
             </li>
         </ul>
     </div>
-
 </div>
 </body>
 </html>

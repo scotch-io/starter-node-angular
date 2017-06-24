@@ -183,7 +183,7 @@ angular.module('cs411', ['ngRoute', 'ngCookies'])
             let config = {
                 method: 'post',
                 url: 'http://localhost:3000/api/searchForIngredient/',
-                data:  {
+                data: {
                     SelectedCity: $scope.city,
                     SelectedState: $scope.state,
                     ItemName: $scope.ingredient
