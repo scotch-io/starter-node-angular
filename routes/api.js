@@ -85,17 +85,6 @@ router.put('/db/:_id', function (req, res, next) {
 let stores = []
 
 router.get('/getRecipes', function (req, res, next) {
-    /*example return
-     "count":30,
-     "recipes":[{
-     "publisher":"The Pioneer Woman",
-     "f2f_url":"http://food2fork.com/view/47024",
-     "title":"Perfect Iced Coffee",
-     "source_url":"http://thepioneerwoman.com/cooking/2011/06/perfect-iced-coffee/",
-     "recipe_id":"47024",
-     "image_url":"http://static.food2fork.com/icedcoffee5766.jpg",
-     "social_rank":100,
-     "publisher_url":"http://thepioneerwoman.com"}, ...]*/
     const options = {
         method: 'POST',
         url: 'http://food2fork.com/api/search',
@@ -104,10 +93,11 @@ router.get('/getRecipes', function (req, res, next) {
     request(options, function (error, response, body) {
         if (error) throw new Error(error);
         const recipeList = JSON.parse(body)
-        const recipeLinks = [{}]
+        const recipeLinks = []
         recipeList.recipes.forEach(function (recipe) {
             recipeLinks.push({title: recipe.title, url: recipe.source_url})
         })
+        recipeLinks.shift()
         res.json(recipeLinks)
     });
 })

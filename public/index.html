@@ -43,7 +43,12 @@
         <div ng-show="authorized">
             <div class="row">
                 <div class="col-md-6">
-                    <button class="btn" ng-click="getRecipes()">Get Recipes</button>
+                    <div class="row">
+                        <button class="btn" ng-click="getRecipes()">Get Recipes</button>
+                    </div>
+                    <div class="row">
+                        <h4>Sorted by Rating</h4>
+                    </div>
                 </div>
                 <div class="col-md-6">
                     <div class="row">
@@ -58,21 +63,21 @@
             </div>
         </div>
     </div>
-</div>
-<div class="row">
-    <div class="col-md-6">
-        <ul class="list-group">
-            <li ng-controller="listController" class="list-group-item largeText" ng-repeat="recipe in recipes">
-                <a ng-href={{recipe.url}}">{{recipe.title}}</a>
-            </li>
-        </ul>
-    </div>
-    <div class="col-md-6">
-        <ul class="list-group">
-            <li ng-controller="listController" class="list-group-item largeText" ng-repeat="store in stores">
-                {{store}}
-            </li>
-        </ul>
+    <div class="row">
+        <div class="col-md-6">
+            <ul class="list-group">
+                <li ng-controller="listController" class="list-group-item largeText" ng-repeat="recipe in recipes">
+                    <a target="_blank" ng-href={{recipe.url}}">{{recipe.title}}</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <ul class="list-group">
+                <li ng-controller="listController" class="list-group-item largeText" ng-repeat="store in stores">
+                    {{store}}
+                </li>
+            </ul>
+        </div>
     </div>
 </div>
 </body>
